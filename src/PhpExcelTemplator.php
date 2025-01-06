@@ -214,9 +214,17 @@ class PhpExcelTemplator
                 if ($col_content) {
                     foreach ($paramKeys as $paramKey) {
                         if (strpos($col_content, $paramKey) !== false) {
-                            $sheet->setCellValueExplicitByColumnAndRow(
-                                $col_key + 1,
-                                $row_key + 1,
+                            $rowIndex = $row_key + 1; // Convert to 1-based index for rows
+                            $colIndex = $col_key + 1; // Convert to 1-based index for columns
+
+                            // Convert column index to column letter
+                            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex);
+
+                            // Combine column letter and row number to get the cell coordinate
+                            $cellCoordinate = $columnLetter . $rowIndex;
+
+                            $sheet->setCellValueExplicit(
+                                $cellCoordinate,
                                 null,
                                 DataType::TYPE_NULL
                             );
